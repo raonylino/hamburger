@@ -1,8 +1,12 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:hamburguer_app/app/constants/app_routes.dart';
+import 'package:hamburguer_app/app/constants/app_text_styles.dart';
 import 'package:hamburguer_app/pages/home_page/cubit/home_cubit.dart';
 import 'package:quantity_input/quantity_input.dart';
+import 'package:hamburguer_app/app/constants/app_colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,10 +22,15 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.deepPurple.shade800,
-            title: const Text(
+            backgroundColor: AppColors.primary,
+            title: Text(
               'Bom Hamburguer',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.white,
+                fontFamily: TextStyles.instance.primary,
+                fontWeight: FontWeight.w700,
+              ),
             )),
         body: BlocConsumer<HomeCubit, HomeState>(
           bloc: cubit,
@@ -31,11 +40,12 @@ class _MyHomePageState extends State<HomePage> {
                 barBlur: 5,
                 borderRadius: BorderRadius.circular(10),
                 animationDuration: const Duration(milliseconds: 500),
-                backgroundColor: Colors.purpleAccent.shade700.withOpacity(0.3),
+                backgroundColor: AppColors.primaryLight.withOpacity(0.3),
                 flushbarStyle: FlushbarStyle.FLOATING,
-                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                title: 'Itens Repetido',
-                message: 'Retire os itens repetidos',
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                title: 'Aviso',
+                message: 'Item já adicionado',
                 duration: const Duration(seconds: 2),
               ).show(context);
             }
@@ -46,150 +56,288 @@ class _MyHomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'X-Burger',
-                        style: TextStyle(
-                          fontSize: 16,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          child: Image(
+                            image: AssetImage(AppRoutes.xburger),
+                            height: 100,
+                            width: 100,
+                          ),
                         ),
-                      ),
-                    ),
-                    Column(mainAxisSize: MainAxisSize.min, children: [
-                      QuantityInput(
-                        maxValue: 1,
-                        minValue: 0,
-                        acceptsZero: true,
-                        value: cubit.hamburgerQuant,
-                        onChanged: (value) {
-                          cubit.setProduct(
-                            productType: ProductType.hamburger,
-                            quant: int.parse(value),
-                          );
-                        },
-                      ),
-                      Text('Quant: ${cubit.hamburgerQuant}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-                    ]),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'X-Egg',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    Column(mainAxisSize: MainAxisSize.min, children: [
-                      QuantityInput(
-                        maxValue: 1,
-                        minValue: 0,
-                        acceptsZero: true,
-                        value: cubit.eggQuant,
-                        onChanged: (value) {
-                          cubit.setProduct(
-                            productType: ProductType.egg,
-                            quant: int.parse(value),
-                          );
-                        },
-                      ),
-                      Text('Quant: ${cubit.eggQuant}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-                    ]),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'X-Bacon',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    Column(mainAxisSize: MainAxisSize.min, children: [
-                      QuantityInput(
-                        maxValue: 1,
-                        minValue: 0,
-                        acceptsZero: true,
-                        value: cubit.baconQuant,
-                        onChanged: (value) {
-                          cubit.setProduct(
-                            productType: ProductType.bacon,
-                            quant: int.parse(value),
-                          );
-                        },
-                      ),
-                      Text('Quant: ${cubit.baconQuant}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-                    ]),
-                    Container(
-                      color: Colors.deepPurple.shade800,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Extras',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'X-Burger',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: TextStyles.instance.secondary,
+                                ),
+                              ),
                             ),
-                          )
-                        ],
-                      ),
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                              QuantityInput(
+                                maxValue: 1,
+                                minValue: 0,
+                                buttonColor: AppColors.secondary,
+                                acceptsZero: true,
+                                value: cubit.hamburgerQuant,
+                                onChanged: (value) {
+                                  cubit.setProduct(
+                                    productType: ProductType.hamburger,
+                                    quant: int.parse(value),
+                                  );
+                                },
+                              ),
+                              Text('Quant: ${cubit.hamburgerQuant}',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: TextStyles.instance.secondary,
+                                      fontWeight: FontWeight.bold))
+                            ]),
+                          ],
+                        ),
+                      ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Batata',
-                        style: TextStyle(
-                          fontSize: 16,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          child: Image(
+                            image: AssetImage(AppRoutes.xegg),
+                            height: 100,
+                            width: 100,
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'X-Egg',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: TextStyles.instance.secondary,
+                                ),
+                              ),
+                            ),
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                              QuantityInput(
+                                maxValue: 1,
+                                minValue: 0,
+                                buttonColor: AppColors.secondary,
+                                acceptsZero: true,
+                                value: cubit.eggQuant,
+                                onChanged: (value) {
+                                  cubit.setProduct(
+                                    productType: ProductType.egg,
+                                    quant: int.parse(value),
+                                  );
+                                },
+                              ),
+                              Text('Quant: ${cubit.eggQuant}',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: TextStyles.instance.secondary,
+                                      fontWeight: FontWeight.bold))
+                            ]),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          child: Image(
+                            image: AssetImage(AppRoutes.xbacon),
+                            height: 100,
+                            width: 100,
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'X-Bacon',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: TextStyles.instance.secondary,
+                                ),
+                              ),
+                            ),
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                              QuantityInput(
+                                maxValue: 1,
+                                minValue: 0,
+                                buttonColor: AppColors.secondary,
+                                acceptsZero: true,
+                                value: cubit.baconQuant,
+                                onChanged: (value) {
+                                  cubit.setProduct(
+                                    productType: ProductType.bacon,
+                                    quant: int.parse(value),
+                                  );
+                                },
+                              ),
+                              Text('Quant: ${cubit.baconQuant}',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: TextStyles.instance.secondary,
+                                      fontWeight: FontWeight.bold))
+                            ]),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow:const[
+                            BoxShadow(
+                              color: AppColors.primaryPure,
+                              spreadRadius:2,
+                            )
+                          ]
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Extras',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: TextStyles.instance.primary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
-                    Column(mainAxisSize: MainAxisSize.min, children: [
-                      QuantityInput(
-                        maxValue: 1,
-                        minValue: 0,
-                        acceptsZero: true,
-                        value: cubit.potatoQuant,
-                        onChanged: (value) {
-                          cubit.setProduct(
-                            productType: ProductType.potato,
-                            quant: int.parse(value),
-                          );
-                        },
-                      ),
-                      Text('Quant: ${cubit.potatoQuant}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-                    ]),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Refrigerantes',
-                        style: TextStyle(
-                          fontSize: 16,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          child: Image(
+                            image: AssetImage(AppRoutes.batata),
+                            height: 100,
+                            width: 100,
+                          ),
                         ),
-                      ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Batata',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: TextStyles.instance.secondary,
+                                ),
+                              ),
+                            ),
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                              QuantityInput(
+                                maxValue: 1,
+                                minValue: 0,
+                                buttonColor: AppColors.secondary,
+                                acceptsZero: true,
+                                value: cubit.potatoQuant,
+                                onChanged: (value) {
+                                  cubit.setProduct(
+                                    productType: ProductType.potato,
+                                    quant: int.parse(value),
+                                  );
+                                },
+                              ),
+                              Text('Quant: ${cubit.potatoQuant}',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: TextStyles.instance.secondary,
+                                      fontWeight: FontWeight.bold))
+                            ]),
+                          ],
+                        ),
+                      ],
                     ),
-                    Column(mainAxisSize: MainAxisSize.min, children: [
-                      QuantityInput(
-                        maxValue: 1,
-                        minValue: 0,
-                        acceptsZero: true,
-                        value: cubit.refriQuant,
-                        onChanged: (value) {
-                          cubit.setProduct(
-                            productType: ProductType.refri,
-                            quant: int.parse(value),
-                          );
-                        },
-                      ),
-                      Text('Quant: ${cubit.refriQuant}', style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-                    ]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          child: Image(
+                            image: AssetImage(AppRoutes.refrigerante),
+                            height: 100,
+                            width: 100,
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Refrigerantes',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: TextStyles.instance.secondary,
+                                ),
+                              ),
+                            ),
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                              QuantityInput(
+                                maxValue: 1,
+                                minValue: 0,
+                                acceptsZero: true,
+                                buttonColor: AppColors.secondary,
+                                value: cubit.refriQuant,
+                                onChanged: (value) {
+                                  cubit.setProduct(
+                                    productType: ProductType.refri,
+                                    quant: int.parse(value),
+                                  );
+                                },
+                              ),
+                              Text(
+                                'Quant: ${cubit.refriQuant}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: TextStyles.instance.secondary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ]),
+                          ],
+                        ),
+                      ],
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 35),
                           child: Text(
-                            'Valor: R\$ ${cubit.soma.toStringAsFixed(2)}',
-                            style: const TextStyle(
+                            'Valor: ${cubit.soma.toStringAsFixed(2)} R\$',
+                            style: TextStyle(
                               fontSize: 16,
+                              fontFamily: TextStyles.instance.secondary,
                             ),
                           ),
                         ),
@@ -197,35 +345,33 @@ class _MyHomePageState extends State<HomePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
                             onPressed: () {
-                              if (cubit.hamburgerQuant > 1 || cubit.eggQuant > 1 || cubit.baconQuant > 1 || cubit.potatoQuant > 1 || cubit.refriQuant > 1) {
-                                Flushbar(
-                                  barBlur: 5,
-                                  borderRadius: BorderRadius.circular(10),
-                                  animationDuration: const Duration(milliseconds: 500),
-                                  backgroundColor: Colors.purpleAccent.shade700.withOpacity(0.3),
-                                  flushbarStyle: FlushbarStyle.FLOATING,
-                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                                  title: 'Itens Repetido',
-                                  message: 'Retire os itens repetidos',
-                                  duration: const Duration(seconds: 2),
-                                ).show(context);
-                              }
+                              Modular.to.pushNamed(AppRoutes.carrinho);
                             },
-                            style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontWeight: FontWeight.w600)),
-                            child: const Row(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.positiveDark,
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w600)),
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text('Pedir'),
-                                SizedBox(
+                                Text(
+                                  'Pedir',
+                                  style: TextStyle(
+                                    color: AppColors.background,
+                                    fontFamily: TextStyles.instance.secondary,
+                                  ),
+                                ),
+                                const SizedBox(
                                   width: 5,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.add_shopping_cart_rounded,
+                                  color: AppColors.background,
                                 ),
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     )
                   ],
