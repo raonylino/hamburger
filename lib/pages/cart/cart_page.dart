@@ -30,6 +30,7 @@ class _CartPageState extends State<CartPage> {
               ),
             )),
         body: BlocConsumer<HomeCubit, HomeState>(
+           bloc: cubit,
           listener: (context, state) {
             // TODO: implement listener
           },

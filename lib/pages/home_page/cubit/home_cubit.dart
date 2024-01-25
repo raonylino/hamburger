@@ -28,15 +28,23 @@ class HomeCubit extends Cubit<HomeState> {
     double? batata = potatoQuant > 0 ? precos['batata'] : 0;
     double? refrigerantes = refriQuant > 0 ? precos['refri'] : 0;
 
-    double totalDesconto = (xburger ?? 0) + (xegg ?? 0) + (xbacon ?? 0) + (batata ?? 0) + (refrigerantes ?? 0);
+    double totalDesconto = (xburger ?? 0) +
+        (xegg ?? 0) +
+        (xbacon ?? 0) +
+        (batata ?? 0) +
+        (refrigerantes ?? 0);
 
-    if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) && potatoQuant > 0 && refriQuant > 0) {
+    if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) &&
+        potatoQuant > 0 &&
+        refriQuant > 0) {
       log('Desconto de 20%');
       totalDesconto *= 0.8;
-    } else if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) && refriQuant > 0) {
+    } else if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) &&
+        refriQuant > 0) {
       log('Desconto de 15%');
       totalDesconto *= 0.85;
-    } else if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) && potatoQuant > 0) {
+    } else if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) &&
+        potatoQuant > 0) {
       log('Desconto de 10%');
       totalDesconto *= 0.9;
     }
@@ -97,6 +105,11 @@ class HomeCubit extends Cubit<HomeState> {
   void emitError() {
     emit(HomeError());
     emit(HomeLoaded());
+  }
+
+  void emitPay() {
+    emit(HomeLoading());
+    emit(PayInitial());
   }
 }
 
