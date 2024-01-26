@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:hamburguer_app/models/cart_model.dart';
 
 part 'home_state.dart';
 
@@ -19,6 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
   int baconQuant = 0;
   int refriQuant = 0;
   int potatoQuant = 0;
+  int desconto = 0;
   double soma = 0;
 
   double calcular() {
@@ -38,17 +41,21 @@ class HomeCubit extends Cubit<HomeState> {
         potatoQuant > 0 &&
         refriQuant > 0) {
       log('Desconto de 20%');
+      desconto = 20;
       totalDesconto *= 0.8;
     } else if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) &&
         refriQuant > 0) {
       log('Desconto de 15%');
+      desconto = 15;
       totalDesconto *= 0.85;
     } else if ((hamburgerQuant > 0 || eggQuant > 0 || baconQuant > 0) &&
         potatoQuant > 0) {
       log('Desconto de 10%');
+      desconto = 10;
       totalDesconto *= 0.9;
     }
-
+    Modular.get<CartModel>().descontoTotal = desconto;
+    Modular.get<CartModel>().valorTotal = totalDesconto;
     return totalDesconto;
   }
 
@@ -58,18 +65,39 @@ class HomeCubit extends Cubit<HomeState> {
     switch (productType) {
       case ProductType.hamburger:
         hamburgerQuant = quant;
+        Modular.get<CartModel>()
+            .itens
+            ?.firstWhere((e) => e.productType == ProductType.hamburger)
+            .quantidade = quant;
         break;
       case ProductType.egg:
         eggQuant = quant;
+        Modular.get<CartModel>()
+            .itens
+            ?.firstWhere((e) => e.productType == ProductType.egg)
+            .quantidade = quant;
         break;
       case ProductType.bacon:
         baconQuant = quant;
+        Modular.get<CartModel>()
+            .itens
+            ?.firstWhere((e) => e.productType == ProductType.bacon)
+            .quantidade = quant;
+
         break;
       case ProductType.refri:
         refriQuant = quant;
+        Modular.get<CartModel>()
+            .itens
+            ?.firstWhere((e) => e.productType == ProductType.refri)
+            .quantidade = quant;
         break;
       case ProductType.potato:
         potatoQuant = quant;
+        Modular.get<CartModel>()
+            .itens
+            ?.firstWhere((e) => e.productType == ProductType.potato)
+            .quantidade = quant;
         break;
     }
     soma = calcular();
@@ -106,7 +134,6 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeError());
     emit(HomeLoaded());
   }
-
 }
 
 enum ProductType {

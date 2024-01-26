@@ -4,11 +4,12 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:hamburguer_app/app/constants/app_colors.dart';
 import 'package:hamburguer_app/app/constants/app_routes.dart';
 import 'package:hamburguer_app/app/constants/app_text_styles.dart';
+import 'package:hamburguer_app/models/cart_model.dart';
+import 'package:hamburguer_app/models/item_model.dart';
 import 'package:hamburguer_app/pages/cart/cubit/pay_cubit.dart';
 
-
 class CartPage extends StatefulWidget {
-   const CartPage({Key? key}) : super(key: key);
+  const CartPage({Key? key}) : super(key: key);
 
   @override
   State<CartPage> createState() => _CartPageState();
@@ -19,6 +20,10 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    CartModel cart = Modular.get<CartModel>();
+    List<ItemModel>? itens =
+        cart.itens?.where((e) => e.quantidade > 0).toList();
+
     return Scaffold(
         appBar: AppBar(
             backgroundColor: AppColors.primary,
@@ -32,7 +37,7 @@ class _CartPageState extends State<CartPage> {
               ),
             )),
         body: BlocConsumer<PayCubit, PayState>(
-           bloc: cubit,
+          bloc: cubit,
           listener: (context, state) {
             // TODO: implement listener
           },
@@ -52,137 +57,75 @@ class _CartPageState extends State<CartPage> {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 15),
-                            child: Image(
-                              image: AssetImage(AppRoutes.xburger),
-                              height: 20,
-                              width: 20,
-                            ),
+                    ListView.builder(
+                      itemCount: itens?.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 15),
+                                child: itens?[index].image != null
+                                    ? Image(
+                                        image: AssetImage(
+                                            itens?[index].image! ?? ''),
+                                        height: 20,
+                                        width: 20,
+                                      )
+                                    : const CircularProgressIndicator(),
+                              ),
+                              Text(itens?[index].nome ?? ''),
+                              Text(
+                                  'Quantidade: ${itens?[index].quantidade.toString() ?? ''}')
+                            ],
                           ),
-                          Text('X-Burger ............. 4.50 R\$'),
-                          Text('Quantidade:1')
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 15),
-                            child: Image(
-                              image: AssetImage(AppRoutes.xegg),
-                              height: 20,
-                              width: 20,
-                            ),
-                          ),
-                          Text('X-Egg .................. 5.00 R\$'),
-                          Text('Quantidade: 1')
-                        ],
-                      ),
-                    ),
-                    
-                    const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 15),
-                            child: Image(
-                              image: AssetImage(AppRoutes.xbacon),
-                              height: 20,
-                              width: 20,
-                            ),
-                          ),
-                          Text('X-Bacon ............... 7.00 R\$'),
-                          Text('Quantidade: 1')
-                        ],
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 15),
-                            child: Image(
-                              image: AssetImage(AppRoutes.batata),
-                              height: 20,
-                              width: 20,
-                            ),
-                          ),
-                          Text('Batata .................. 2.00 R\$'),
-                          Text('Quantidade: 1')
-                        ],
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 15),
-                            child: Image(
-                              image: AssetImage(AppRoutes.refrigerante),
-                              height: 20,
-                              width: 20,
-                            ),
-                          ),
-                          Text('Refrigerante ........ 2.50 R\$'),
-                          Text('Quantidade: 1')
-                        ],
-                      ),
-                    ),
-                          Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          boxShadow:const[
-                            BoxShadow(
-                              color: AppColors.primaryPure,
-                              spreadRadius:2,
-                            )
-                          ]
-                        ),
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: AppColors.primaryPure,
+                                spreadRadius: 2,
+                              )
+                            ]),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Desconto: 10%',
+                              'Desconto: ${cart.descontoTotal}%',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
-                                fontFamily: TextStyles.instance.secondary,
+                                fontFamily: TextStyles.instance.primary,
+                                fontWeight: FontWeight.w700,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    Padding(padding:const EdgeInsets.all(8),
-                    child: Text('Valor total: 15.50 R\$',
-                      style: TextStyle(
-                        fontFamily:TextStyles.instance.secondary,
-                        fontSize: 30,
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        'Valor total: R\$ ${cart.valorTotal?.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontFamily: TextStyles.instance.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
                     ),
                     const Spacer(),
                     Row(
