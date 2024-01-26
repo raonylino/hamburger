@@ -3,7 +3,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:hamburguer_app/app/constants/app_colors.dart';
 import 'package:hamburguer_app/app/constants/app_routes.dart';
 import 'package:hamburguer_app/app/constants/app_text_styles.dart';
-import 'package:quantity_input/quantity_input.dart';
 import 'package:validatorless/validatorless.dart';
 
 class PayPage extends StatefulWidget {
@@ -119,7 +118,9 @@ class _PayPageState extends State<PayPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Modular.to.pushNamed(AppRoutes.order);
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.positiveDark,
                         textStyle:

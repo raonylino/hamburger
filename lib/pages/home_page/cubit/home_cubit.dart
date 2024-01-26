@@ -107,10 +107,6 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoaded());
   }
 
-  void emitPay() {
-    emit(HomeLoading());
-    emit(PayInitial());
-  }
 }
 
 enum ProductType {

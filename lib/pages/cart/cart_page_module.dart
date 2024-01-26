@@ -1,6 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:hamburguer_app/app/constants/app_routes.dart';
 import 'package:hamburguer_app/pages/cart/cart_page.dart';
+import 'package:hamburguer_app/pages/cart/order_page.dart';
+import 'package:hamburguer_app/pages/cart/pay_page.dart';
 import 'package:hamburguer_app/pages/home_page/home_page.dart';
 
 class CartPageModule extends Module{
@@ -20,7 +22,13 @@ class CartPageModule extends Module{
     );
     r.child(
       AppRoutes.pay,
-      child: (context) =>  const HomePage(),
+      child: (context) =>  const PayPage(),
+      transition: TransitionType.rightToLeftWithFade,
+      duration:const Duration(milliseconds: 500),
+    );
+      r.child(
+      AppRoutes.order,
+      child: (context) =>  const OrderPage(),
       transition: TransitionType.rightToLeftWithFade,
       duration:const Duration(milliseconds: 500),
     );

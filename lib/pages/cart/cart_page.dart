@@ -4,17 +4,19 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:hamburguer_app/app/constants/app_colors.dart';
 import 'package:hamburguer_app/app/constants/app_routes.dart';
 import 'package:hamburguer_app/app/constants/app_text_styles.dart';
-import 'package:hamburguer_app/pages/home_page/cubit/home_cubit.dart';
+import 'package:hamburguer_app/pages/cart/cubit/pay_cubit.dart';
+
 
 class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+   const CartPage({Key? key}) : super(key: key);
 
   @override
   State<CartPage> createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
-  var cubit = HomeCubit();
+  var cubit = PayCubit();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +31,7 @@ class _CartPageState extends State<CartPage> {
                 fontWeight: FontWeight.w700,
               ),
             )),
-        body: BlocConsumer<HomeCubit, HomeState>(
+        body: BlocConsumer<PayCubit, PayState>(
            bloc: cubit,
           listener: (context, state) {
             // TODO: implement listener
@@ -65,7 +67,7 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ),
                           Text('X-Burger ............. 4.50 R\$'),
-                          Text('Quantidade: 1')
+                          Text('Quantidade:1')
                         ],
                       ),
                     ),
@@ -88,6 +90,7 @@ class _CartPageState extends State<CartPage> {
                         ],
                       ),
                     ),
+                    
                     const Padding(
                       padding: EdgeInsets.all(10),
                       child: Row(
@@ -144,6 +147,42 @@ class _CartPageState extends State<CartPage> {
                           Text('Quantidade: 1')
                         ],
                       ),
+                    ),
+                          Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
+                          boxShadow:const[
+                            BoxShadow(
+                              color: AppColors.primaryPure,
+                              spreadRadius:2,
+                            )
+                          ]
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Desconto: 10%',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: TextStyles.instance.secondary,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(padding:const EdgeInsets.all(8),
+                    child: Text('Valor total: 15.50 R\$',
+                      style: TextStyle(
+                        fontFamily:TextStyles.instance.secondary,
+                        fontSize: 30,
+                      ),
+                    ),
                     ),
                     const Spacer(),
                     Row(
